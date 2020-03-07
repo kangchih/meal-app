@@ -1,25 +1,39 @@
 import React from 'react';
 import { View, Text, StyleSheet, Button, FlatList, TouchableOpacity } from 'react-native';
 import { CATEGORIES } from '../data/dummy-data';
+import CategoryGridTile from '../components/CategoryGridTile'
 
 const CategoriesScreen = props => {
     // console.log(props);
     const renderGridItem = (itemData) => {
+
         return (
-            <TouchableOpacity onPress={() => {
-                props.navigation.navigate({
-                    routeName: 'CategoryMeals',
-                    params: {
-                        categoryId: itemData.item.id
-                    }
-                });
-            }}>
-                <View style={styles.gridItem}>
-                    <Text>{itemData.item.title}</Text>
-                </View>
-            </TouchableOpacity>
-        );
-    }
+        <CategoryGridTile 
+        title={itemData.item.title} 
+        color={itemData.item.color}
+        onSelect={()=>{
+            props.navigation.navigate({
+                routeName: 'CategoryMeals',
+                params: {
+                    categoryId: itemData.item.id
+                }
+            });
+        }} />
+        // return (
+        //     <TouchableOpacity onPress={() => {
+        //         props.navigation.navigate({
+        //             routeName: 'CategoryMeals',
+        //             params: {
+        //                 categoryId: itemData.item.id
+        //             }
+        //         });
+        //     }}>
+        //         <View style={styles.gridItem}>
+        //             <Text>{itemData.item.title}</Text>
+        //         </View>
+        //     </TouchableOpacity>
+        // );
+        )};
 
     return (
         <FlatList
@@ -47,11 +61,11 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center'
     },
-    gridItem: {
-        flex: 1,
-        margin: 15,
-        height: 150
-    }
+    // gridItem: {
+    //     flex: 1,
+    //     margin: 15,
+    //     height: 150
+    // }
 
 });
 
