@@ -16,6 +16,10 @@ const MealDetailScreen = props => {
     const availableMeals = useSelector(state => state.meals.meals);
     const mealId = props.navigation.getParam('mealId');
 
+    const currentMealIsFavorite = useSelector(state =>
+        state.meals.favoriteMeals.some(meal => meal.id === mealId)
+    );
+
     const selectedMeal = availableMeals.find(meal => meal.id === mealId);
 
     // ---- Section 148 ---- //
@@ -29,6 +33,9 @@ const MealDetailScreen = props => {
     }, [toggleFavoriteHandler]);
     // ---- Section 148 ---- //
 
+    useEffect(() => {
+        props.navigation.setParams({ isFav: currentMealIsFavorite });
+    }, [currentMealIsFavorite]);
 
     // // This works but the title displays lately
     // This means that I sent these params to my header when this component reders in the end
@@ -72,13 +79,16 @@ MealDetailScreen.navigationOptions = navigationData => {
     // ---- section 148 ---- //
     const toggleFavorite = navigationData.navigation.getParam('toggleFav');
 
+    // ---- section 150 ---- //
+    const isFavorite = navigationData.navigation.getParam('isFav');
+
     return {
         headerTitle: mealTitle,
         headerRight: () =>
             <HeaderButtons HeaderButtonComponent={HeaderButton}>
                 <Item
                     title="Favorite"
-                    iconName='ios-star'
+                    iconName={isFavorite ? 'ios-star' : 'ios-star-outline'}
                     onPress={toggleFavorite}
                 />
                 {/* <Item
