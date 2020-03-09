@@ -3,7 +3,8 @@ import { View, Text, StyleSheet, Switch, Platform } from 'react-native';
 import { HeaderButtons, Item } from 'react-navigation-header-buttons';
 import HeaderButton from '../components/HeaderButton';
 import Colors from '../constants/Colors';
-
+import { useDispatch } from 'react-redux';
+import { setFilters } from '../store/actions/meals';
 const FilterSwitch = props => {
     return (
         <View style={styles.filterContainer}>
@@ -27,6 +28,8 @@ const FiltersScreen = props => {
     const [isVegan, setIsVegan] = useState(false);
     const [isVegetarian, setIsVegetarian] = useState(false);
 
+    const dispatch = useDispatch();
+
     const saveFilters = useCallback(() => {
         const appliedFilters = {
             glutenFree: isGlutenFree,
@@ -34,8 +37,9 @@ const FiltersScreen = props => {
             vegan: isVegan,
             isVegetarian: isVegetarian
         };
-        console.log(appliedFilters);
-    }, [isGlutenFree, isLactoseFree, isVegan, isVegetarian]);
+        // console.log(appliedFilters);
+        dispatch(setFilters(appliedFilters));
+    }, [isGlutenFree, isLactoseFree, isVegan, isVegetarian, dispatch]);
 
     // Use this variable which holds a pointer at this function in the end
     // and forward this value, so forward this pointer or store this pointer to that funtion
