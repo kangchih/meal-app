@@ -1,0 +1,5 @@
+My practice for react-native development
+
+Start project:
+$ npm install -g expo-cli
+$ expo start
