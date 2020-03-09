@@ -9,7 +9,7 @@ import { useSelector } from 'react-redux';
 
 const FavoritesScreen = props => {
 
-const favMeals = useSelector(state => state.meals.meals);
+const favMeals = useSelector(state => state.meals.favoriteMeals);
 // const favMeals = availableMeals.filter(meal => meal.id === 'm1' || meal.id === 'm2')
 
     return ( <MealList listData={favMeals} navigation={props.navigation}/>

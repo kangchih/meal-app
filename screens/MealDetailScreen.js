@@ -1,14 +1,13 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useCallback } from 'react';
 import { ScrollView, Image, View, Text, StyleSheet } from 'react-native';
-import { MEALS } from '../data/dummy-data'
 import { HeaderButtons, Item } from 'react-navigation-header-buttons';
 import HeaderButton from '../components/HeaderButton'
 import DefaultText from '../components/DefaultText'
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
+import { toggleFavorite } from '../store/actions/meals'
 
 const ListItem = props => {
     return <View style={styles.listItem}>
-
         <DefaultText>{props.children}</DefaultText>
     </View>
 };
@@ -19,12 +18,24 @@ const MealDetailScreen = props => {
 
     const selectedMeal = availableMeals.find(meal => meal.id === mealId);
 
-    // This works but the title displays lately
-    useEffect(() => {
-        props.navigation.setParams({ mealTitle: selectedMeal.title });
-    }, [selectedMeal]);
+    // ---- Section 148 ---- //
+    const dispatch = useDispatch();
+    const toggleFavoriteHandler = useCallback(() => {
+        dispatch(toggleFavorite(mealId));
+    }, [dispatch, mealId]);
 
+    useEffect(() => {
+        props.navigation.setParams({ toggleFav: toggleFavoriteHandler });
+    }, [toggleFavoriteHandler]);
+    // ---- Section 148 ---- //
+
+
+    // // This works but the title displays lately
     // This means that I sent these params to my header when this component reders in the end
+    // useEffect(() => {
+    //     props.navigation.setParams({ mealTitle: selectedMeal.title });
+    // }, [selectedMeal]);
+
 
     return (
         <ScrollView>
@@ -54,9 +65,12 @@ const MealDetailScreen = props => {
 };
 
 MealDetailScreen.navigationOptions = navigationData => {
-    const mealId = navigationData.navigation.getParam('mealId');
+    // const mealId = navigationData.navigation.getParam('mealId');
     const mealTitle = navigationData.navigation.getParam('mealTitle');
     // const selectedMeal = MEALS.find(meal => meal.id === mealId);
+
+    // ---- section 148 ---- //
+    const toggleFavorite = navigationData.navigation.getParam('toggleFav');
 
     return {
         headerTitle: mealTitle,
@@ -65,9 +79,7 @@ MealDetailScreen.navigationOptions = navigationData => {
                 <Item
                     title="Favorite"
                     iconName='ios-star'
-                    onPress={() => {
-                        console.log('Mark as favorite')
-                    }}
+                    onPress={toggleFavorite}
                 />
                 {/* <Item
                     title="Favorite"
